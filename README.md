@@ -53,8 +53,6 @@ The Kanban board allows users to manage tasks across different stages (Backlog, 
    php artisan serve
    ```
 
-   The Laravel backend should now be running on [http://127.0.0.1:8000](http://127.0.0.1:8000).
-
 4. **Run the React frontend (in another terminal):**
 
    ```bash
@@ -63,11 +61,9 @@ The Kanban board allows users to manage tasks across different stages (Backlog, 
    yarn dev
    ```
 
-   The React frontend should now be running on [http://localhost:3000](http://localhost:3000).
-
 5. **Open the application:**
 
-   Open your web browser and go to [http://localhost:3000](http://localhost:3000) to see the Kanban board application in action.
+   Open your web browser and go to [http://127.0.0.1:8000](http://127.0.0.1:8000). to see the Kanban board application in action.
 
 
 
