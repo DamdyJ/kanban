@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
+import { useForm } from "@inertiajs/react";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const DEFAULT_CARDS = [
   // BACKLOG
@@ -42,7 +44,13 @@ export default function KanbanBoard() {
 }
 
 const Board = () => {
-  const [cards, setCards] = useState(DEFAULT_CARDS);
+  const [cards, setCards] = useLocalStorage("kanban_cards", DEFAULT_CARDS);
+
+  const cachedCards = useMemo(() => DEFAULT_CARDS, []);
+
+  if (!cards) {
+    setCards(cachedCards);
+  }
 
   return (
     <div className="flex h-full w-full justify-between gap-3 p-12">
@@ -301,6 +309,10 @@ const BurnBarrel = ({ setCards }) => {
 const AddCard = ({ column, setCards }) => {
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
+  const { data, setData, post, errors, reset } = useForm({
+    title: "",
+    column: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -316,12 +328,13 @@ const AddCard = ({ column, setCards }) => {
     setCards((pv) => [...pv, newCard]);
 
     setAdding(false);
+    post(route("card.store"));
   };
 
   return (
     <>
       {adding ? (
-        <motion.form layout onSubmit={handleSubmit}>
+        <motion.form layout onSubmit={handleSubmit} method="POST">
           <textarea
             onChange={(e) => setText(e.target.value)}
             autoFocus
